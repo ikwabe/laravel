@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class salaryPayment extends Controller
 {
@@ -14,7 +15,8 @@ class salaryPayment extends Controller
      */
     public function index()
     {
-        return view('salaryPayment');
+        $emp = DB::table('employees')->get();
+        return view('salaryPayment', compact('emp'));
     }
 
     /**
@@ -22,9 +24,70 @@ class salaryPayment extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $choice = $request->get('choice');
+        //dd($choice);
+
+        if($choice == 1){
+            
+            $query = "SELECT employees.id as empid, (SUM(allowance.amount)) as alw 
+            FROM employees, employeeallowance, allowance
+            WHERE employees.id = employeeallowance.empid  
+            AND allowance.id = employeeallowance.allowanceid GROUP BY employees.id";
+            
+            $result = DB::connection('pgsql')->select($query);
+            //dd($users);
+
+            foreach($result as $emp ){
+                $getSal = "SELECT (salary.amount + $emp->alw) as sal
+                FROM salary,employees
+                WHERE employees.salaryid = salary.id AND employees.id = $emp->empid";
+
+                $result2 = DB::connection('pgsql')->select($getSal);
+
+               
+                    DB::table('paidsalary')->insert([
+                 ['empid' => $emp->empid, 'amount' => $result2[0]->sal, 'date'=> date("Y-m-d")]
+                    ]);
+
+
+            }
+            echo "Salary payment recorded Successful <br>";
+            echo '<a href="/salaryPayment">Back</a>';
+        }
+        elseif($choice == 2){
+
+            $empid = $request->get('empid');
+            $query = "SELECT employees.id as empid, (SUM(allowance.amount)) as alw 
+            FROM employees, employeeallowance, allowance
+            WHERE employees.id = $empid 
+            AND allowance.id = employeeallowance.allowanceid GROUP BY employees.id";
+
+            
+            $result = DB::connection('pgsql')->select($query);
+            dd($result);
+            foreach($result as $emp ){
+
+                $getSal = "SELECT (salary.amount + $emp->alw) as sal
+                FROM salary,employees
+                WHERE employees.salaryid = salary.id AND employees.id = $emp->empid";
+
+                $result2 = DB::connection('pgsql')->select($getSal);
+
+                    DB::table('paidsalary')->insert([
+                 ['empid' => $emp->empid, 'amount' => $result2[0]->sal, 'date'=> date("Y-m-d")]
+                    ]);
+
+
+            }
+            echo "Salary payment recorded Successful <br>";
+            echo '<a href="/salaryPayment">Back</a>';
+        }
+        
+
+           
+           
     }
 
     /**

@@ -85,20 +85,21 @@
             </div>
         <div class="container ">
         <div class="col-md-4 ">
-                <form>
+                <form action ="/empcreate" method="post">
+                <input type="hidden" name="_token" value= "<?php echo csrf_token();?>">
                     <div class="form-group">
                         <label for="exampleInputPassword1">Employee Name</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1">
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="empname">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Salary Category</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01">
+                        <select class="custom-select" id="inputGroupSelect01" name="salID">
                             <option selected>Choose...</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
+                            @foreach($sal as $sals)
+                            <option value="{{$sals->id}}">{{$sals->category}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary form-control">Register</button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class allowance extends Controller
 {
@@ -22,8 +23,16 @@ class allowance extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $name = $request->input('aname');
+        $amount = $request->input('amount');
+        DB::table('allowance')->insert([
+            ['allowancename' => $name, 'amount' => $amount]
+        ]);
+
+        echo "Allowance Registered Successful <br>";
+        echo '<a href="/allowRegister">Back</a>';
         //
     }
 

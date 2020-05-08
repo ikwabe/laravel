@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class allocateAllowance extends Controller
+class report extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +16,9 @@ class allocateAllowance extends Controller
      */
     public function index()
     {
-        // $sql = "SELECT * FROM 'users'";
-        // $subscribers = DB::connection('pgsql')->select($sql);
-        // dd($subscribers);
-        // $emp = DB::table('employees')->get();
-        
-        $emp = DB::table('employees')->get();
-        $allow = DB::table('allowance')->get();
-
-        return view('allocateAllowance', compact('emp','allow'));
+        $report = [];
+        $allowance =[];
+        return view('report', compact('allowance','report'));
     }
 
     /**
@@ -34,15 +28,41 @@ class allocateAllowance extends Controller
      */
     public function create(Request $request)
     {
-        $empid = $request->get('empname');
-        $allid = $request->get('allid');
-        DB::table('employeeallowance')->insert([
-            ['allowanceid' => $allid, 'empid' => $empid]
-        ]);
+        $report = [];
+        $row = 0;
+        $i = 1;
+        $employee = DB::table('employees')->get();
+        $allowance = DB::table('allowance')->get();
 
-        echo "Allowance Registered Successful <br>";
-        echo '<a href="/allocateAllowance">Back</a>';
-        //
+        foreach($employee as $emp){
+            $col = 1;
+            $report[$row][0] = $emp->empname;
+
+            foreach($allowance as $allo){
+
+                
+                $query = "SELECT allowance.amount 
+            FROM employeeallowance, allowance
+            WHERE allowance.id = $allo->id AND employeeallowance.empid = $emp->id 
+            AND allowance.id = employeeallowance.allowanceid";
+
+            $result = DB::connection('pgsql')->select($query);
+
+            if(count($result) > 0 ){
+                $report[$row][$col] = $result[0]->amount;
+            }
+            else{
+                $report[$row][$col] = 0;
+            }
+
+            $col++;
+            }
+
+            $row++;
+        }
+
+        //return view('report', compact('allowance'))->withStore($result);
+         dd($report);
     }
 
     /**

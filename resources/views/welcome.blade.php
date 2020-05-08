@@ -90,6 +90,10 @@
               <div class="form-group">
                 <a class="btn btn-primary form-control" href="{{ url('/salaryPayment') }}" >Salary Payments</a>
               <div>
+              <br>
+              <div class="form-group">
+                <a class="btn btn-primary form-control" href="{{ url('/reportView') }}" >View Reports</a>
+              <div>
             </div>
         </div>
     </body>

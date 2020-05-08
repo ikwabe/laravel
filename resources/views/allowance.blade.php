@@ -85,14 +85,15 @@
             </div>
         <div class="container ">
         <div class="col-md-4 ">
-                <form>
+                <form action="/allowcreate" method="post">
+                <input type="hidden" name="_token" value= "<?php echo csrf_token();?>">
                     <div class="form-group">
                         <label for="exampleInputPassword1">Allowance Name</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1">
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="aname">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Allowance Amount</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1">
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="amount">
                     </div>
                     <button type="submit" class="btn btn-primary form-control">Register</button>
                 </form>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -6,8 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Employee</title>
-
-       
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -64,28 +61,7 @@
                 margin-bottom: 30px;
             }
         </style>
-
-        <script>
-        window.onload = function(){
-            document.getElementById("emplist").hidden = true;
-        }
-        function changeOption() {
-
-            var opt = document.getElementById("inputGroupSelect01").value;
-
-            if (opt != "2") 
-            {
-                    document.getElementById("emplist").hidden = true;
-
-            }
-            else {
-                    document.getElementById("emplist").hidden = false;
-                }
-
-        }
-        </script>
     </head>
-
     <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">ShedOc</a>
@@ -103,39 +79,67 @@
 </nav>
     <div class="content">
                 <div class="title m-b-md">
-                    Salary Payments
+                    Report
                 </div>
-              
             </div>
         <div class="container ">
         <div class="col-md-4 ">
-                <form action="/salcreate" method="post">
+                <form action ="/report" method="post">
                 <input type="hidden" name="_token" value= "<?php echo csrf_token();?>">
+                <div class="form-group">
+                        <label for="exampleInputPassword1">Report Date</label>
+                        <input type="date" class="form-control" id="exampleInputPassword1" name="rdate">
+                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Payment for</label>
+                            <label class="input-group-text" for="inputGroupSelect01">Report Type</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01" onchange="changeOption();" name="choice">
-                            <option name="0" selected>Choose...</option>
-                            <option value="1">All Employees</option>
-                            <option value="2">One Employee</option>
+                        <select class="custom-select" id="inputGroupSelect01" name="reptype">
+                            <option selected>Choose...</option>
+                            <option value="1">Single report CA</option>
+                            <option value="2">Single report Summary</option>
+                            <option value="3">Accumulative reports (Salary averages)</option>
+                            <option value="4">Accumulative reports (Employee allowances)</option>
                         </select>
                     </div>
-                    <div class="input-group mb-3" id="emplist">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect02">Employee Name</label>
-                        </div>
-                        <select class="custom-select" id="inputGroupSelect02" name="empid">
-                            <option name="0" selected>Choose...</option>
-                            @foreach($emp as $emps)
-                            <option value="{{$emps->id}}">{{$emps->empname}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary form-control">Pay Salary</button>
+                    <button type="submit" class="btn btn-primary form-control">View Report</button>
+
                 </form>
+
           </div>
+<br>
+          <div>
+                    <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Handle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                    <td>@twitter</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                </div>
           </div>
-          
     </body>
 </html>

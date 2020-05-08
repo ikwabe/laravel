@@ -85,32 +85,29 @@
             </div>
         <div class="container ">
         <div class="col-md-4 ">
-                <form>
+                <form action="/allowalo" method="post">
+                <input type="hidden" name="_token" value= "<?php echo csrf_token();?>">
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect02">Allowance Type</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect02">
+                        <select class="custom-select" id="inputGroupSelect02" name ="allid">
                             <option selected>Choose...</option>
-                            <option value="1">Transport Allowance</option>
-                            <option value="2">Food Allowance</option>
-                            <option value="3">Communication Allowance</option>
-                            <option value="4">Child Care Allowance</option>
-                            <option value="5">School Fees Allowance</option>
+                            @foreach($allow as $all)
+                            <option value="{{$all->id}}">{{$all->allowancename}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Employee Name</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01">
+                        <select class="custom-select" id="inputGroupSelect01" name="empname">
                             <option selected>Choose...</option>
-                            <option value="1">Juma Shabani</option>
-                            <option value="2">Shedrack Octavian</option>
-                            <option value="3">Emily Dingilii</option>
-                            <option value="4">Ester John</option>
-                            <option value="5">Mariam Mtiga</option>
-                            <option value="6">Salama Kondo</option>
+                            @foreach($emp as $emps)
+                            <option value="{{$emps->id}}">{{$emps->empname}}</option>
+                            @endforeach
+                            
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary form-control">Allocate Allowance</button>

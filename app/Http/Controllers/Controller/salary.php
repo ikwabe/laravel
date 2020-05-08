@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class salary extends Controller
 {
@@ -14,7 +15,8 @@ class salary extends Controller
      */
     public function index()
     {
-        return view('salary');
+        $sal = DB::table('salary')->get();
+        return view('salary', compact('sal'));
     }
 
     /**
@@ -22,9 +24,17 @@ class salary extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $amount = $request->input('amount');
+        $cat = $request->input('cat');
+        DB::table('salary')->insert([
+            ['amount' => $amount, 'category' => $cat]
+        ]);
+
+        echo "Salary Registered Successful <br>";
+        echo '<a href="/salary">Back</a>';
+       
     }
 
     /**
