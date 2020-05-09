@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -61,6 +62,13 @@
                 margin-bottom: 30px;
             }
         </style>
+
+        <script type="text/javascript">
+        window.onload = function(){
+
+            document.getElementById('exampleInputPassword1').value = new Date().toISOString().slice(0,10);
+        }
+        </script>
     </head>
     <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -103,42 +111,58 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary form-control">View Report</button>
-
+                    
+                   
                 </form>
-
+        
+                   
           </div>
+          <br>
+                @if($message != null)
+                    <div class="form-group"><span class="alert alert-danger form-control">{{$message}}</span></div>
+                    @endif
+         
 <br>
+
           <div>
+          @if(count($allowance) > 0)
                     <table class="table">
                                 <thead>
                                     <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Employee Name</th>
+                                    @foreach($allowance as $allw)
+                                    <th scope="col">{{$allw->allowancename}}</th>
+                                    @endforeach
+                                    <th scope="col">Basic Salary</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Avarage</th>
+                                    <th scope="col">Rank</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php $i=1; ?>
+                                @foreach($report as $emp)
                                     <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <?php $total = 0; $avarage = 0; $rank='A'; ?>
+                                    <th scope="row">{{$i++}}</th>
+                                    <td scope="col">{{$emp[0]}}</td>
+                                    @for($key = 2; $key < count($emp); $key++)
+                                    <td scope="col">{{$emp[$key]}}</td>
+                                    
+                                    <input type="hidden" name="" value= "{{$total+=$emp[$key]}}">
+
+                                    @endfor
+                                    <td scope="col">{{$emp[1]}}</td>
+                                    <td scope="col">{{$total+$emp[1]}}</td>
+                                    <td scope="col">{{$avarage}}</td>
+                                    <td scope="col">{{$rank}}</td>
                                     </tr>
-                                    <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                    </tr>
+                                @endforeach
+                                   
                                 </tbody>
                                 </table>
+                                @endif
                                 </div>
           </div>
     </body>
